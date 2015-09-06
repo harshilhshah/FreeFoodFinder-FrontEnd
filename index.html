@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="moment.js"></script>
   <script src="https://connect.facebook.net/en_US/all.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
+<style type="text/css">
+.row {
+    box-shadow: 0 0 1px blue;
+    padding:15px;
+}
+.row:hover{
+  box-shadow: 0 0 30px black;
+}
+</style>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
 <body>
+  <div id='map'></div>
   <div class='container'>
   <div id='noclue'></div>
 </div>
@@ -67,7 +77,13 @@
     for (var i = 0; i < data.length; i++){
       if(data[i].description.search(/free|drinks|prize|giveaway|bbq/i) == -1) continue;
       var location = (data[i].place === undefined || data[i].place.location == undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
-      var eventItem = [data[i].id.toString(),data[i].name,"*",data[i].start_time,location,data[i].description];
+      var time = moment(data[i].start_time).format("dddd, MMMM D, YYYY (h:mm A");
+      if(data[i].end_time) {
+        time += " - " + moment(data[i].end_time).format("h:mm A)");
+      }else{
+        time += ")";
+      }
+      var eventItem = [data[i].id.toString(),data[i].name,"*",time,location,data[i].description];
       eventData.push(eventItem);
     }
   }
@@ -92,7 +108,7 @@
       if(descr_text.search(/free|drinks|games|prize|giveaway|bbq/i) == -1) continue;
       var img_url = item.find('enclosure').attr('url');
       var time = $.parseHTML(descr_text)[0].innerText;
-      var location = $.parseHTML(descr_text)[2].innerText;
+      var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
       var description = $.parseHTML(descr_text)[4].innerText;
       var eventItem = ["0",event_title,img_url,time,location,description];
       eventData.push(eventItem);
@@ -139,6 +155,36 @@
 
 
   </script>
+
+  <script>
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 6,
+    center: {lat: 40.5018, lng: 74.4481}
+  });
+  var geocoder = new google.maps.Geocoder();
+  geocodeAddress(geocoder, map);
+}
+
+function geocodeAddress(geocoder, resultsMap) {
+  var address = "Piscataway, NJ 08854";
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      resultsMap.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location
+      });
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+
+    </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtVs4kLJj9p14T08pNnn1LN-y9rEmaqWQ&callback=initMap"
+        async defer></script>
 
 </body>
 </html>
