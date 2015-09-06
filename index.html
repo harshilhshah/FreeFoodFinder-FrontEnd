@@ -23,7 +23,6 @@
 
 </head>
 <body>
-  <div id='map'></div>
   <div class='container'>
   <div id='noclue'></div>
 </div>
@@ -155,36 +154,6 @@
 
 
   </script>
-
-  <script>
-function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 6,
-    center: {lat: 40.5018, lng: 74.4481}
-  });
-  var geocoder = new google.maps.Geocoder();
-  geocodeAddress(geocoder, map);
-}
-
-function geocodeAddress(geocoder, resultsMap) {
-  var address = "Piscataway, NJ 08854";
-  geocoder.geocode({'address': address}, function(results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      resultsMap.setCenter(results[0].geometry.location);
-      var marker = new google.maps.Marker({
-        map: resultsMap,
-        position: results[0].geometry.location
-      });
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
-    }
-  });
-}
-
-    </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtVs4kLJj9p14T08pNnn1LN-y9rEmaqWQ&callback=initMap"
-        async defer></script>
 
 </body>
 </html>
