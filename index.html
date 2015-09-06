@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://connect.facebook.net/en_US/all.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+</head>
+<body>
+
+  <p id='noclue'></p>
+  <div id='noclue2'></div>
+
+  <script type="text/javascript">
+
+  var accessToken = "CAANjBmdVSEcBACyfLUuGiZBkZBZCCI1wWub5T17ZCtzdyKLXV8QU4kA3a9JCDtfDxz3LmQZCRZA0llSpg3l5JthypVRBbwJSeMlUmyZCTCZAbT4SZBn6HDUUrB4omEQdNoYxxA1u6ql1ZBKCiwA5AGBMhaeJVkCaNyfZBfHSTweVtdQWFXZBLM2xDhrXErssZAZBTQJmWCQ8sfc8uZAzwZDZD";
+  var text = "";
+  var d = new Date();
+  var today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  var eventData = [];
+
+  FB.init({
+          appId      : '953304084727879',
+          xfbml      : true,
+          version    : 'v2.4'
+  });
+
+  FB.getLoginStatus(function(response) {
+    if (response.status === 'connected') {
+        accessToken = response.authResponse.accessToken;
+    }else if (response.status !== 'not_authorized') {
+      FB.login(function(response) {
+        if (response.authResponse) {
+          accessToken = response.authResponse.accessToken;
+        }
+      },true, {scope: 'user_events'});
+   } 
+ });
+
+  FB.api('/RUPAPresents/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('RUOCSA/events?since='+today,{access_token: accessToken },function(response){
+    loopOverResponse(response.data); 
+  });
+
+  FB.api('/ruaacc/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('/youth.eagleton/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('/Cookiesncrepesnb/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  function loopOverResponse(data){
+    for (var i = 0; i < data.length; i++){
+      if(data[i].description.search(/free|drinks|prize|giveaway|bbq/i) == -1) continue;
+      var location = (data[i].place === undefined || data[i].place.location == undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
+      var eventItem = [data[i].id.toString(),data[i].name,"*",data[i].start_time,location,data[i].description];
+      eventData.push(eventItem);
+    }
+  }
+  // get the upcoming event link and using that link find the event info.
+  function makeAjaxReq(org_url,callback){
+  $.ajax({
+      type: 'GET',
+      url: org_url,
+      dataType: 'html',
+      success: callback
+    });
+  }
+
+
+  function findEvents(data){
+    var itemList = $(data).find('item');
+    for(var i = 0; i < itemList.length; i++){
+      var item = $(itemList[i]);
+      var event_title = item.contents()[3].nodeValue;
+      if (event_title == null) event_title = " ";
+      var descr_text = item.find('description').text();
+      if(descr_text.search(/free|drinks|games|prize|giveaway|bbq/i) == -1) continue;
+      var img_url = item.find('enclosure').attr('url');
+      var time = $.parseHTML(descr_text)[0].innerText;
+      var location = $.parseHTML(descr_text)[2].innerText;
+      var description = $.parseHTML(descr_text)[4].innerText;
+      var eventItem = ["0",event_title,img_url,time,location,description];
+      eventData.push(eventItem);
+    }
+    changeURL();
+  }
+
+  function getURL(eventt){
+    var deferred = $.Deferred();
+    FB.api('/'+eventt[0]+'/picture',{access_token: accessToken }, function(response) {
+        eventt[2]=response.data.url;
+        deferred.resolve(eventt);
+      });
+    return deferred.promise();
+  }
+
+  function changeURL(){
+    var temp = [];
+
+    for (var i = eventData.length - 1; i >= 0; i--) {
+      if(eventData[i][2] != "*") continue;
+      temp.push(getURL(eventData[i]));
+      eventData.splice(i,1);
+    };
+    $.when.apply($, temp).then(function() {
+             var xg=arguments; // The array of resolved objects as a pseudo-array
+             for (var i = xg.length - 1; i >= 0; i--) {
+               eventData.push(xg[i]);
+             };
+          display();  
+    })
+
+    
+  }
+
+  function display(){
+      for(var z = 0; z < eventData.length; z++){
+      var item = eventData[z];
+    $('#noclue').append("<img src=\"" + item[2] + "\"/><strong>" + item[1] + "</strong><em> " + item[3] + "</em><br>" + item[4] + "<br>" + item[5] + "<br><hr>");
+    }
+  }
+
+  makeAjaxReq("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22https%3A%2F%2Frutgers.collegiatelink.net%2FEventRss%2FEventsRss%22%20and%20xpath%3D%22%2F%2Fitem%22&diagnostics=true",findEvents);
+
+
+  </script>
+
+</body>
+</html>
