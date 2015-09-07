@@ -12,7 +12,7 @@
 <style type="text/css">
 .row {
     box-shadow: 0 0 1px blue;
-    padding:15px;
+    padding:10px;
 }
 .row:hover{
   box-shadow: 0 0 30px black;
@@ -23,7 +23,7 @@
 
 </head>
 <body>
-  <div class='container'>
+  <div class='container-fluid'>
   <div id='noclue'></div>
 </div>
   <script type="text/javascript">
@@ -69,6 +69,10 @@
   });
 
   FB.api('/Cookiesncrepesnb/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('/Rutgers.psa/events?since='+today,{access_token: accessToken }, function(response) {
       loopOverResponse(response.data);
   });
 
@@ -146,7 +150,7 @@
   function display(){
       for(var z = 0; z < eventData.length; z++){
       var item = eventData[z];
-    $('#noclue').append("<div class=\"row\"><div class=\"col-sm-2\"><img src=\"" + item[2] + "\" height=\"150\" width=\"160\"/></div><div class=\"col-sm-10\"><b>" + item[1] + "</b><em> " + item[3] + "</em><br>" + item[4] + "<br>" + item[5] + "</div><br></div><hr>");
+    $('#noclue').append("<div class=\"row\"><div class=\"col-lg-2\"><img src=\"" + item[2] + "\" height=\"150\" width=\"160\"/></div><div class=\"col-sm-10\"><b>" + item[1] + "</b><em> " + item[3] + "</em><br>" + item[4] + "<br>" + item[5] + "</div><br></div><hr>");
     }
   }
 
