@@ -52,7 +52,7 @@
    } 
  });
 
- FB.api('/RUPAPresents/events?since='+today,{access_token: accessToken }, function(response) {
+  FB.api('/RUPAPresents/events?since='+today,{access_token: accessToken }, function(response) {
       loopOverResponse(response.data);
   });
 
@@ -72,17 +72,11 @@
       loopOverResponse(response.data);
   });
 
-  FB.api('/rutgersmad/events?since='+today,{access_token: accessToken }, function(response) {
-      loopOverResponse(response.data);
-  });
-
   FB.api('/Rutgers.psa/events?since='+today,{access_token: accessToken }, function(response) {
       loopOverResponse(response.data);
   });
 
-
   function loopOverResponse(data){
-    if(data === undefined) return;
     for (var i = 0; i < data.length; i++){
       if(data[i].description.search(/free|drinks|prize|giveaway|bbq/i) == -1) continue;
       var location = (data[i].place === undefined || data[i].place.location == undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
@@ -114,7 +108,7 @@
       var event_title = item.contents()[3].nodeValue;
       if (event_title == null) event_title = " ";
       var descr_text = item.find('description').text();
-      if(descr_text.search(/free\s|drinks|games|prize|pizza|giveaway|bbq/i) == -1) continue;
+      if(descr_text.search(/free|drinks|games|prize|giveaway|bbq/i) == -1) continue;
       var img_url = item.find('enclosure').attr('url');
       var time = $.parseHTML(descr_text)[0].innerText;
       var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
@@ -144,7 +138,6 @@
     };
     $.when.apply($, temp).then(function() {
              var xg=arguments; // The array of resolved objects as a pseudo-array
-    
              for (var i = xg.length - 1; i >= 0; i--) {
                eventData.push(xg[i]);
              };
