@@ -75,10 +75,13 @@
   FB.api('/Rutgers.psa/events?since='+today,{access_token: accessToken }, function(response) {
       loopOverResponse(response.data);
   });
+  FB.api('/rutgersmad/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
 
   function loopOverResponse(data){
     for (var i = 0; i < data.length; i++){
-      if(data[i].description.search(/free|drinks|prize|giveaway|bbq/i) == -1) continue;
+      if(data[i].description.search(/free\s|drinks|prize|giveaway|bbq|pizza/i) == -1) continue;
       var location = (data[i].place === undefined || data[i].place.location == undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
       var time = moment(data[i].start_time).format("dddd, MMMM D, YYYY (h:mm A");
       if(data[i].end_time) {
