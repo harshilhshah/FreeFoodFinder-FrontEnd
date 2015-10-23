@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="moment.js"></script>
   <script src="https://connect.facebook.net/en_US/all.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -22,7 +23,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body >
   <div class='container-fluid'>
   <div id='noclue'></div>
 </div>
@@ -114,7 +115,7 @@
       var event_title = item.contents()[3].nodeValue;
       if (event_title == null) event_title = " ";
       var descr_text = item.find('description').text();
-      if(descr_text.search(/free\s|drinks|games|prize|pizza|giveaway|bbq/i) == -1) continue;
+      if(descr_text.search(/free\sfood|drinks|games|prize|pizza|giveaway|bbq/i) == -1) continue;
       var img_url = item.find('enclosure').attr('url');
       var time = $.parseHTML(descr_text)[0].innerText;
       var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
