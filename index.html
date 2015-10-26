@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="moment.js"></script>
+  <script src="https://connect.facebook.net/en_US/all.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<style type="text/css">
+.row {
+    box-shadow: 0 0 1px blue;
+    padding:10px;
+}
+.row:hover{
+  box-shadow: 0 0 30px black;
+}
+</style>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+<body >
+  <div class='container-fluid'>
+  <div id='noclue'></div>
+</div>
+  <script type="text/javascript">
+
+  var accessToken = "CAANjBmdVSEcBACyfLUuGiZBkZBZCCI1wWub5T17ZCtzdyKLXV8QU4kA3a9JCDtfDxz3LmQZCRZA0llSpg3l5JthypVRBbwJSeMlUmyZCTCZAbT4SZBn6HDUUrB4omEQdNoYxxA1u6ql1ZBKCiwA5AGBMhaeJVkCaNyfZBfHSTweVtdQWFXZBLM2xDhrXErssZAZBTQJmWCQ8sfc8uZAzwZDZD";
+  var text = "";
+  var d = new Date();
+  var today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  var eventData = [];
+
+  FB.init({
+          appId      : '953304084727879',
+          xfbml      : true,
+          version    : 'v2.4'
+  });
+
+  FB.getLoginStatus(function(response) {
+    if (response.status === 'connected') {
+        accessToken = response.authResponse.accessToken;
+    }else if (response.status !== 'not_authorized') {
+      FB.login(function(response) {
+        if (response.authResponse) {
+          accessToken = response.authResponse.accessToken;
+        }
+      },true, {scope: 'user_events'});
+   } 
+ });
+
+ FB.api('/RUPAPresents/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('RUOCSA/events?since='+today,{access_token: accessToken },function(response){
+    loopOverResponse(response.data); 
+  });
+
+  FB.api('/ruaacc/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('/youth.eagleton/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('/Cookiesncrepesnb/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('/rutgersmad/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+  FB.api('/Rutgers.psa/events?since='+today,{access_token: accessToken }, function(response) {
+      loopOverResponse(response.data);
+  });
+
+
+  function loopOverResponse(data){
+    if(data === undefined) return;
+    for (var i = 0; i < data.length; i++){
+      if(data[i].description.search(/free|drinks|prize|giveaway|bbq/i) == -1) continue;
+      var location = (data[i].place === undefined || data[i].place.location == undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
+      var time = moment(data[i].start_time).format("dddd, MMMM D, YYYY (h:mm A");
+      if(data[i].end_time) {
+        time += " - " + moment(data[i].end_time).format("h:mm A)");
+      }else{
+        time += ")";
+      }
+      var eventItem = [data[i].id.toString(),data[i].name,"*",time,location,data[i].description];
+      eventData.push(eventItem);
+    }
+  }
+  // get the upcoming event link and using that link find the event info.
+  function makeAjaxReq(org_url,callback){
+  $.ajax({
+      type: 'GET',
+      url: org_url,
+      dataType: 'html',
+      success: callback
+    });
+  }
+
+
+  function findEvents(data){
+    var itemList = $(data).find('item');
+    for(var i = 0; i < itemList.length; i++){
+      var item = $(itemList[i]);
+      var event_title = item.contents()[3].nodeValue;
+      if (event_title == null) event_title = " ";
+      var descr_text = item.find('description').text();
+      if(descr_text.search(/free\sfood|drinks|games|prize|pizza|giveaway|bbq/i) == -1) continue;
+      var img_url = item.find('enclosure').attr('url');
+      var time = $.parseHTML(descr_text)[0].innerText;
+      var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
+      var description = $.parseHTML(descr_text)[4].innerText;
+      var eventItem = ["0",event_title,img_url,time,location,description];
+      eventData.push(eventItem);
+    }
+    changeURL();
+  }
+
+  function getURL(eventt){
+    var deferred = $.Deferred();
+    FB.api('/'+eventt[0]+'/picture',{access_token: accessToken }, function(response) {
+        eventt[2]=response.data.url;
+        deferred.resolve(eventt);
+      });
+    return deferred.promise();
+  }
+
+  function changeURL(){
+    var temp = [];
+
+    for (var i = eventData.length - 1; i >= 0; i--) {
+      if(eventData[i][2] != "*") continue;
+      temp.push(getURL(eventData[i]));
+      eventData.splice(i,1);
+    };
+    $.when.apply($, temp).then(function() {
+             var xg=arguments; // The array of resolved objects as a pseudo-array
+    
+             for (var i = xg.length - 1; i >= 0; i--) {
+               eventData.push(xg[i]);
+             };
+          display();  
+    })
+
+    
+  }
+
+  function display(){
+      for(var z = 0; z < eventData.length; z++){
+      var item = eventData[z];
+    $('#noclue').append("<div class=\"row\"><div class=\"col-lg-2\"><img src=\"" + item[2] + "\" height=\"150\" width=\"160\"/></div><div class=\"col-sm-10\"><b>" + item[1] + "</b><em> " + item[3] + "</em><br>" + item[4] + "<br>" + item[5] + "</div><br></div><hr>");
+    }
+  }
+
+  makeAjaxReq("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22https%3A%2F%2Frutgers.collegiatelink.net%2FEventRss%2FEventsRss%22%20and%20xpath%3D%22%2F%2Fitem%22&diagnostics=true",findEvents);
+
+
+  </script>
+
+   <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-60013456-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+     </script>
+
+</body>
+</html>
