@@ -128,7 +128,7 @@
 
   function getURL(eventt){
     var deferred = $.Deferred();
-    FB.api('/'+eventt[0]+'/picture',{access_token: accessToken }, function(response) {
+    FB.api('/'+eventt[0]+'/picture?type=large',{access_token: accessToken }, function(response) {
         eventt[2]=response.data.url;
         deferred.resolve(eventt);
       });
