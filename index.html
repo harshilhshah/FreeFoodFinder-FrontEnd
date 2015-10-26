@@ -34,6 +34,8 @@
   var d = new Date();
   var today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
   var eventData = [];
+  var param = "/events?fields=name,description,start_time,end_time,place,picture.type(large){url}&since=" + today;
+  var fb_urls = ['/RUPAPresents','/RUOCSA','/ruaacc','/youth.eagleton','/Cookiesncrepesnb','/rutgersmad','/Rutgers.psa'];
 
   FB.init({
           appId      : '953304084727879',
@@ -53,33 +55,11 @@
    } 
  });
 
- FB.api('/RUPAPresents/events?since='+today,{access_token: accessToken }, function(response) {
+  for (var i = 0; i < fb_urls.length; i++) {
+    FB.api(fb_urls[i]+param,{access_token: accessToken }, function(response) {
       loopOverResponse(response.data);
-  });
-
-  FB.api('RUOCSA/events?since='+today,{access_token: accessToken },function(response){
-    loopOverResponse(response.data); 
-  });
-
-  FB.api('/ruaacc/events?since='+today,{access_token: accessToken }, function(response) {
-      loopOverResponse(response.data);
-  });
-
-  FB.api('/youth.eagleton/events?since='+today,{access_token: accessToken }, function(response) {
-      loopOverResponse(response.data);
-  });
-
-  FB.api('/Cookiesncrepesnb/events?since='+today,{access_token: accessToken }, function(response) {
-      loopOverResponse(response.data);
-  });
-
-  FB.api('/rutgersmad/events?since='+today,{access_token: accessToken }, function(response) {
-      loopOverResponse(response.data);
-  });
-
-  FB.api('/Rutgers.psa/events?since='+today,{access_token: accessToken }, function(response) {
-      loopOverResponse(response.data);
-  });
+    });
+  };
 
 
   function loopOverResponse(data){
@@ -93,7 +73,8 @@
       }else{
         time += ")";
       }
-      var eventItem = [data[i].id.toString(),data[i].name,"*",time,location,data[i].description];
+      var img_url = data[i].picture.data.url;
+      var eventItem = [data[i].id.toString(),data[i].name,img_url,time,location,data[i].description];
       eventData.push(eventItem);
     }
   }
@@ -126,23 +107,8 @@
     changeURL();
   }
 
-  function getURL(eventt){
-    var deferred = $.Deferred();
-    FB.api('/'+eventt[0]+'/picture?type=large',{access_token: accessToken }, function(response) {
-        eventt[2]=response.data.url;
-        deferred.resolve(eventt);
-      });
-    return deferred.promise();
-  }
-
   function changeURL(){
     var temp = [];
-
-    for (var i = eventData.length - 1; i >= 0; i--) {
-      if(eventData[i][2] != "*") continue;
-      temp.push(getURL(eventData[i]));
-      eventData.splice(i,1);
-    };
     $.when.apply($, temp).then(function() {
              var xg=arguments; // The array of resolved objects as a pseudo-array
     
