@@ -12,11 +12,10 @@
 
 <style type="text/css">
 .row {
-    box-shadow: 0 0 1px blue;
     padding:10px;
 }
-.row:hover{
-  box-shadow: 0 0 30px black;
+.row:not(:last-child) {
+    border-bottom: 1px solid #ccc;
 }
 </style>
 <!-- Latest compiled and minified JavaScript -->
@@ -124,7 +123,7 @@
   function display(){
       for(var z = 0; z < eventData.length; z++){
       var item = eventData[z];
-    $('#noclue').append("<div class=\"row\"><div class=\"col-lg-2\"><img src=\"" + item[2] + "\" height=\"150\" width=\"160\"/></div><div class=\"col-sm-10\"><b>" + item[1] + "</b><em> " + item[3] + "</em><br>" + item[4] + "<br>" + item[5] + "</div><br></div><hr>");
+    $('#noclue').append("<div class=\"row\"><div class=\"col-xs-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + "\" height=\"150\" width=\"160\"/></div><div class=\"col-xs-10\"><b>" + item[1] + "</b><em> " + item[3] + "</em><br>" + item[4] + "<br>" + item[5] + "</div><br></div>");
     }
   }
 
