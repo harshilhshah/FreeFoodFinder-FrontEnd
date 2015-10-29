@@ -1,13 +1,20 @@
 {
-  "name": "harshilhshah",
+  "name": "RU_EVENT_FINDER",
+  "homepage": "http://rustarstudent.me/RU_EVENT_FINDER/",
   "authors": [
     "Harshil Shah <harshilhshah1995@gmail.com>"
   ],
-  "description": "",
-  "main": "",
+  "description": "This is the best, YO!",
+  "main": "index.html",
   "moduleType": [],
+  "keywords": [
+    "Food",
+    "Yum",
+    "Free",
+    "Rutgers"
+  ],
   "license": "MIT",
-  "homepage": "",
+  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -17,13 +24,10 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.1.0",
-    "paper-input": "Polymer/paper-input#~0.5.6",
-    "paper-card": "Polymer/paper-card",
-    "paper-button": "Polymer/paper-button#~0.5.6"
-  },
-  "resolutions": {
-    "polymer": "^1.1.0",
-    "webcomponentsjs": "^0.7.2",
-    "paper-shadow": "^0.5"
+    "paper-card": "PolymerElements/paper-card#~1.0.7",
+    "paper-header-panel": "PolymerElements/paper-header-panel#~1.0.5",
+    "paper-badge": "PolymerElements/paper-badge#~1.0.4",
+    "paper-spinner": "PolymerElements/paper-spinner#~1.0.3",
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.4"
   }
 }
