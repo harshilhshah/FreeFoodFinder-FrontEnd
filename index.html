@@ -23,7 +23,8 @@ h4{
 .title{
   margin-bottom:20px; 
   font-size:72pt; 
-  font-weight: 300; 
+  font-weight: 200; 
+  font-family: 'Amaranth', sans-serif;
   text-align:center;
   color: rgb(255, 255, 255);
   background-color: #BB0022;
@@ -34,7 +35,7 @@ h4{
 
 </head>
 <body >
-   <p class="title">RU Free Food Finder</p>
+   <p class="title">RU FreeFoodFinder</p>
   <div id='noclue' class='container'></div>
   <script type="text/javascript">
 
@@ -44,7 +45,14 @@ h4{
   var today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
   var eventData = [];
   var param = "/events?fields=name,description,start_time,end_time,place,picture.type(large){url}&since=" + today;
-  var fb_urls = ['/RUPAPresents','/RUOCSA','/ruaacc','/youth.eagleton','/Cookiesncrepesnb','/rutgersmad','/Rutgers.psa'];
+  var fb_urls = ['/RUPAPresents','/RUOCSA','/ruaacc','/youth.eagleton','/Cookiesncrepesnb','/rutgersmad',
+            '/Rutgers.psa'];
+  var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", "drinks",
+            "punch", "served", "serving", "pie",  "cake", "soda", "chicken", "wings", "burger",
+            "burrito", "bagel", "poporn", " ice ", "cream", "donut", "beer", "free food", 
+            "subs", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
+            "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue"
+        ];
 
   FB.init({
           appId      : '953304084727879',
@@ -70,13 +78,23 @@ h4{
     });
   };
 
+  function getTags(str){
+    var i;
+    var ret = "";
+        for(i = 0; i < food_tags.length; i++){
+             if(str.toLowerCase().indexOf(food_tags[i]) !== -1){
+                ret += "#" + food_tags[i] + " ";
+             }
+        }
+    return ret;
+  }
 
   function loopOverResponse(data){
     if(data === undefined) return;
     for (var i = 0; i < data.length; i++){
-      if(data[i].description.search(/free|drinks|prize|giveaway|bbq/i) == -1) continue;
+      if(getTags(data[i].description).length < 1) continue;
       var location = (data[i].place === undefined || data[i].place.location == undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
-      var time = moment(data[i].start_time).format("dddd, MMMM D, YYYY (h:mm A");
+      var time = moment(data[i].start_time).format("dddd, MMMM D (h:mm A");
       if(data[i].end_time) {
         time += " - " + moment(data[i].end_time).format("h:mm A)");
       }else{
@@ -105,8 +123,11 @@ h4{
       var event_title = item.contents()[3].nodeValue;
       if (event_title == null) event_title = " ";
       var descr_text = item.find('description').text();
-      if(descr_text.search(/free\sfood|drinks|games|prize|pizza|giveaway|bbq/i) == -1) continue;
+      if(getTags(descr_text).length < 1) continue;
       var img_url = item.find('enclosure').attr('url');
+      if (img_url == null){
+        img_url = "http://previews.123rf.com/images/carmenbobo/carmenbobo1405/carmenbobo140500482/28389907-Stamp-with-text-free-food-inside-vector-illustration-Stock-Vector.jpg";
+      }
       var time = $.parseHTML(descr_text)[0].innerText;
       var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
       var description = $.parseHTML(descr_text)[4].innerText;
@@ -131,7 +152,10 @@ h4{
   function display(){
     for(var z = 0; z < eventData.length; z++){
       var item = eventData[z];
-      $('#noclue').append("<div class=\"row item\"><div class=\"col-xs-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + "\" height=\"150\" width=\"160\"/></div><div class='col-xs-10'><h4>" + item[1] + "</h4><em> " + item[3] + "</em><br>" + item[4] + "<br>" + item[5] + "</div></div><br></div><hr>");
+      $('#noclue').append("<div class=\"row item\"><div class=\"col-xs-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + "\" height=\"1240\" width=\"190\"/></div><div class='col-xs-10'><h4>" 
+        + item[1] + "</h4><span class='glyphicon glyphicon-calendar' aria-hidden='true'/><em>&nbsp;" 
+        + item[3] + "</em><br><span class='glyphicon glyphicon-map-marker' aria-hidden='true'/>&nbsp;" 
+        + item[4] + "<br><p><span class='glyphicon glyphicon-tags' aria-hidden='true'/>&nbsp;" + getTags(item[5]) + "</p></div></div><br></div><hr>");
     }
   }
 
