@@ -94,7 +94,7 @@ h4{
     for (var i = 0; i < data.length; i++){
       if(getTags(data[i].description).length < 1) continue;
       var location = (data[i].place === undefined || data[i].place.location == undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
-      var time = moment(data[i].start_time).format("dddd, MMMM D (h:mm A");
+      var time = moment(data[i].start_time).format("dddd, MMM D (h:mm A");
       if(data[i].end_time) {
         time += " - " + moment(data[i].end_time).format("h:mm A)");
       }else{
@@ -129,6 +129,17 @@ h4{
         img_url = "http://previews.123rf.com/images/carmenbobo/carmenbobo1405/carmenbobo140500482/28389907-Stamp-with-text-free-food-inside-vector-illustration-Stock-Vector.jpg";
       }
       var time = $.parseHTML(descr_text)[0].innerText;
+      if(time.indexOf(") -") !== -1){
+        var t_split = time.split(') - ');
+        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("MMM D (h:mm A)") + 
+          moment(t_split[1],"dddd, MMMM D, YYYY (h:mm A)").format(" - MMM D (h:mm A)");
+      }else if(time.indexOf("M -")){
+        var t_split = time.split(' - ');
+        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMM D (h:mm A") +
+          moment(t_split[1],"h:mm A)").format(" - h:mm A)");
+      }else{
+        time = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("dddd, MMM D (h:mm A)");
+      }
       var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
       var description = $.parseHTML(descr_text)[4].innerText;
       var eventItem = ["0",event_title,img_url,time,location,description];
