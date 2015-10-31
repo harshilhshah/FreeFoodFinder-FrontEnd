@@ -28,6 +28,7 @@
     "paper-header-panel": "PolymerElements/paper-header-panel#~1.0.5",
     "paper-badge": "PolymerElements/paper-badge#~1.0.4",
     "paper-spinner": "PolymerElements/paper-spinner#~1.0.3",
-    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.4"
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.4",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.8"
   }
 }
