@@ -18,7 +18,7 @@
           version    : 'v2.4'
   });
 
-  FB.getLoginStatus(function(response) {
+  /*FB.getLoginStatus(function(response) {
     if (response.status === 'connected') {
         accessToken = response.authResponse.accessToken;
     }else if (response.status !== 'not_authorized') {
@@ -28,7 +28,7 @@
         }
       },true, {scope: 'user_events'});
    } 
- });
+ });*/
 
   for (var i = 0; i < fb_urls.length; i++) {
     FB.api(fb_urls[i]+param,{access_token: accessToken }, function(response) {
