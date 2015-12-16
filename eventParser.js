@@ -4,7 +4,7 @@
   var eventData = [];
   var param = "/events?fields=name,description,start_time,end_time,place,picture.type(large){url}&since=" + today;
   var fb_urls = ['/RUPAPresents','/RUOCSA','/ruaacc','/youth.eagleton','/Cookiesncrepesnb','/rutgersmad',
-            '/Rutgers.psa'];
+            '/Rutgers.psa','/ruveg','/RUSURErutgers','/me','/oneatrutgers'];
   var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", 
             "drinks","punch", "serving", "pie",  "cake", "soda", "chicken", "wings", "burger",
             "burrito", "bagel", "poporn", " ice ", "cream", "donut", "beer", "free food", 
@@ -118,8 +118,8 @@
   function display(){
     for(var z = 0; z < eventData.length; z++){
       var item = eventData[z];
-      $('#event_box').append("<div class=\"row item\"><div class=\"col-xs-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + 
-        "\" height='80' width='190'/></div><div class='col-xs-10'><h4 class='nomargin'>" + item[1] + 
+      $('#event_box').append("<div class=\"row item\"><div class=\"col-sm-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + 
+        "\" height='80' width='190'/><br></div><div class='col-sm-10'><h4 class='nomargin'>" + item[1] + 
         "</h4><span class='glyphicon glyphicon-calendar' aria-hidden='true'/><em class='time'>" + item[3] 
         + "</em><br><span class='glyphicon glyphicon-map-marker' aria-hidden='true'/><span class='loc'>" 
         + item[4] + "</span><br><span class='glyphicon glyphicon-tags' aria-hidden='true'/><span class='tags'>" 
