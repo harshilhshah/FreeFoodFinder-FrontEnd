@@ -1,0 +1,9 @@
+{
+  "firebase": "crackling-heat-4631",
+  "public": "public",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

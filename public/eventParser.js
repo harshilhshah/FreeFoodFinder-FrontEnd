@@ -1,7 +1,5 @@
   var accessToken = "CAANjBmdVSEcBACyfLUuGiZBkZBZCCI1wWub5T17ZCtzdyKLXV8QU4kA3a9JCDtfDxz3LmQZCRZA0llSpg3l5JthypVRBbwJSeMlUmyZCTCZAbT4SZBn6HDUUrB4omEQdNoYxxA1u6ql1ZBKCiwA5AGBMhaeJVkCaNyfZBfHSTweVtdQWFXZBLM2xDhrXErssZAZBTQJmWCQ8sfc8uZAzwZDZD";
   var def_img = "http://previews.123rf.com/images/carmenbobo/carmenbobo1405/carmenbobo140500482/28389907-Stamp-with-text-free-food-inside-vector-illustration-Stock-Vector.jpg";
-  var myFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/events");
-  var timeParser = new chrono.Chrono();
   var today = moment().format("YYYY-MM-DD");
   var eventData = [];
   var param = "/events?fields=name,description,start_time,end_time,place,picture.type(large){url}&since=" + today;
@@ -20,7 +18,7 @@
           version    : 'v2.4'
   });
 
-  FB.getLoginStatus(function(response) {
+  /*FB.getLoginStatus(function(response) {
     if (response.status === 'connected') {
         accessToken = response.authResponse.accessToken;
     }else if (response.status !== 'not_authorized') {
@@ -30,19 +28,7 @@
         }
       },true, {scope: 'user_events'});
    } 
-  });
-
-  myFirebaseRef.on("child_added", function(snapshot) {
-    var data = snapshot.val();
-    if(getTags(data.body).length < 1) return;
-    var time = timeParser.parseDate(data.body,moment(data.created));
-    if(time == null || moment(time).format("YYYY-MM-DD") < today) return;
-    var timeChronoSt = moment(time).format("YYYY-MM-DD hh:mm:ss");
-    time = moment(time).format("dddd, MMM D (h:mm A)");
-    eventData = [];
-    eventData.push([data.created,data.subject,def_img,time,"Check description",data.body,timeChronoSt,timeChronoSt]);
-    changeURL();
-  });
+ });*/
 
   for (var i = 0; i < fb_urls.length; i++) {
     FB.api(fb_urls[i]+param,{access_token: accessToken }, function(response) {
@@ -66,11 +52,9 @@
       if(getTags(data[i].description).length < 1) continue;
       var location = (data[i].place === undefined || data[i].place.location === undefined) ? " " : data[i].place.location.street + ", " + data[i].place.location.city + " " + data[i].place.location.state;
       var time = moment(data[i].start_time).format("dddd, MMM D (h:mm A");
-      var timeChronoSt = moment(data[i].start_time).format("YYYY-MM-DD hh:mm:ss");
-      var timeChronoEn = (data[i].end_time) ? moment(data[i].end_time).format("YYYY-MM-DD hh:mm:ss") : timeChronoSt;
       time += (data[i].end_time) ? " - " + moment(data[i].end_time).format("h:mm A)") : ")";
       var img_url = data[i].picture.data.url;
-      eventData.push([data[i].id.toString(),data[i].name,img_url,time,location,data[i].description,timeChronoSt,timeChronoEn]);
+      eventData.push([data[i].id.toString(),data[i].name,img_url,time,location,data[i].description]);
     }
   }
   // get the upcoming event link and using that link find the event info.
@@ -95,28 +79,20 @@
       var img_url = item.find('enclosure').attr('url');
       img_url = (img_url) ? img_url : def_img;
       var time = $.parseHTML(descr_text)[0].innerText;
-      var timeChronoSt = today;
-      var timeChronoEn = today;
       if(time.indexOf(") -") !== -1){
         var t_split = time.split(') - ');
-        timeChronoSt = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("YYYY-MM-DD hh:mm:ss");
-        timeChronoEn = moment(t_split[1],"dddd, MMMM D, YYYY (h:mm A)").format("YYYY-MM-DD hh:mm:ss");
         time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMM D (h:mm A)") + 
           moment(t_split[1],"dddd, MMMM D, YYYY (h:mm A)").format(" - MMM D (h:mm A)");
       }else if(time.indexOf("M -")){
         var t_split = time.split(' - ');
-        timeChronoSt = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("YYYY-MM-DD hh:mm:ss");
-        timeChronoEn = moment(t_split[1],"h:mm A)").format("YYYY-MM-DD hh:mm:ss");
         time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMM D (h:mm A") +
           moment(t_split[1],"h:mm A)").format(" - h:mm A)");
       }else{
         time = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("dddd, MMM D (h:mm A)");
-        timeChronoSt = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("YYYY-MM-DD hh:mm:ss");
-        timeChronoEn = timeChronoSt;
       }
       var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
       var description = $.parseHTML(descr_text)[4].innerText;
-      var eventItem = ["0",event_title,img_url,time,location,description,timeChronoSt,timeChronoEn];
+      var eventItem = ["0",event_title,img_url,time,location,description];
       eventData.push(eventItem);
     }
     changeURL();
@@ -130,7 +106,7 @@
              for (var i = xg.length - 1; i >= 0; i--) {
                eventData.push(xg[i]);
              };  
-    })   
+    })    
     eventData.sort(function(a,b){
       var da = (a[3].indexOf(') -') != -1) ? new Date(a[3]) : new Date(a[3].split(' - ')[0]);
       var db = (b[3].indexOf(') -') != -1) ? new Date(b[3]) : new Date(b[3].split(' - ')[0]);      
@@ -144,12 +120,7 @@
       var item = eventData[z];
       $('#event_box').append("<div class=\"row item\"><div class=\"col-sm-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + 
         "\" height='80' width='190'/><br></div><div class='col-sm-10'><h4 class='nomargin'>" + item[1] + 
-        "</h4><span class='addtocalendar atc-style-button-icon'><a class='atcb-link' tabindex='1'>"
-        + "<img src='https://addtocalendar.com/static/cal-icon/cal-bw-01.png' width='22'>"
-        + "</a><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
-        "<var class='atc_date_end'>" + item[7] + "</var><var class='atc_timezone'>America/New_York</var>" + 
-        "<var class='atc_title'>" + item[1] + "</var><var class='atc_description'>" + item[5] + "</var>" + 
-        "<var class='atc_location'>" + item[4] + "</var></var></span><em class='time'>" + item[3] 
+        "</h4><span class='glyphicon glyphicon-calendar' aria-hidden='true'/><em class='time'>" + item[3] 
         + "</em><br><span class='glyphicon glyphicon-map-marker' aria-hidden='true'/><span class='loc'>" 
         + item[4] + "</span><br><span class='glyphicon glyphicon-tags' aria-hidden='true'/><span class='tags'>" 
         + getTags(item[5]) + "</span><br><a href='#' onclick='$(this).parent().parent().next().next().toggle(); ($(this).text()[0]==\"V\") ?"

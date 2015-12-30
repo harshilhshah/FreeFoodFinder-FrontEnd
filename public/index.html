@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Free Food Finder</title>
+  <title>Free Food</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="myCSS.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" href="http://addtocalendar.com/atc/1.5/atc-style-button-icon.css" type="text/css">
-  <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-  <script src="https://rawgithub.com/wanasit/chrono/master/chrono.min.js"></script>
   <script src="moment.js"></script>
   <script src="https://connect.facebook.net/en_US/all.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -20,24 +17,12 @@
   <section id='event_box' class='container'></section>
   <div class="panel-footer text-center">This website gets event data from other official rutgers websites so it holds no responsibility for any events.</div>
 
-  <script src="eventParser.js"></script>
+  <script type="text/javascript" src="eventParser.js"> </script>
 
-  <!--  Add to Calendar Script -->
-  <script type="text/javascript">(function () {
-            if (window.addtocalendar)if(typeof window.addtocalendar.start == "function")return;
-            if (window.ifaddtocalendar == undefined) { window.ifaddtocalendar = 1;
-                var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-                s.type = 'text/javascript';s.charset = 'UTF-8';s.async = true;
-                s.src = ('https:' == window.location.protocol ? 'https' : 'http')+'://addtocalendar.com/atc/1.5/atc.min.js';
-                var h = d[g]('body')[0];h.appendChild(s); }})();
-  </script>
-
-  <!--  Google Analytics -->
   <script type="text/javascript">
   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
   document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
   </script>
-
   <script type="text/javascript">
   try {
     var pageTracker = _gat._getTracker("UA-60013456-1");
