@@ -7,7 +7,7 @@
   var today = moment().format("YYYY-MM-DD");
   var eventData = [];
   var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", 
-            "drinks", "punch", "serving", "pie",  "cake", "soda", "chicken", "wings", "burger",
+            "drinks", "punch", "serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
             "burrito", "bagel", "poporn", " ice ", "cream", "donut", "beer", "free food", 
             "subs", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
             "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "tacos"
@@ -128,6 +128,16 @@
         "<div class='div'>" + item[5] + "</div><br><hr>");
     }
     $(".div").hide();
+    addToCal();
   }
 
+  function addToCal() {
+    if (window.addtocalendar)if(typeof window.addtocalendar.start == "function")return;
+    if (window.ifaddtocalendar == undefined) { window.ifaddtocalendar = 1;
+        var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+        s.type = 'text/javascript';s.charset = 'UTF-8';s.async = true;
+        s.src = ('https:' == window.location.protocol ? 'https' : 'http')+'://addtocalendar.com/atc/1.5/atc.min.js';
+        var h = d[g]('body')[0];h.appendChild(s); 
+    }
+  }
 
