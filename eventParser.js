@@ -1,6 +1,7 @@
   var def_img = "http://previews.123rf.com/images/carmenbobo/carmenbobo1405/carmenbobo140500482/28389907-Stamp-with-text-free-food-inside-vector-illustration-Stock-Vector.jpg";
   var myFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/events");
   var myFBFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/fb");
+  var ruRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/rss");
   var clRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/collegiatelinkrss");
   var timeParser = new chrono.Chrono();
   var today = moment().format("YYYY-MM-DD");
