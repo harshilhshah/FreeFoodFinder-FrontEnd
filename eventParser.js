@@ -30,7 +30,7 @@
     if(time == null || moment(time).format("YYYY-MM-DD") < today) return;
     var timeChronoSt = moment(time).format("YYYY-MM-DD hh:mm:ss A");
     time = moment(time).format("dddd, MMM D (h:mm A)");
-    eventData.push([data.created,data.subject,def_img,time,"Check description",data.body,timeChronoSt,timeChronoSt]);
+    eventData.push([data.created,data.subject,def_img,time,"Check description",data.body,timeChronoSt,timeChronoSt,null]);
     changeDisplay();
   });
 
@@ -44,7 +44,7 @@
         var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
         time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";
         var img_url = data.picture.data.url;
-        eventData.push([data.id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn]);
+        eventData.push([data.id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,null]);
         changeDisplay();
       }
     });
@@ -58,7 +58,8 @@
     var timeChronoSt = moment(data.startTime,"YYYY-MM-DD hh:mm:ss ddd").format("YYYY-MM-DD hh:mm:ss A");
     var timeChronoEn = moment(data.endTime,"YYYY-MM-DD hh:mm:ss ddd").format("YYYY-MM-DD hh:mm:ss A");
     var location = data.location + ", " + data.campus;
-    eventData.push([snap.key(),data.title,def_img,time,location,data.description,timeChronoSt,timeChronoEn]); 
+    var latlng = {lat: data.lat, lng: data.lng};
+    eventData.push([snap.key(),data.title,def_img,time,location,data.description,timeChronoSt,timeChronoEn,latlng]); 
     changeDisplay();
   });
 
@@ -91,7 +92,7 @@
     }
     var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
     var description = $.parseHTML(descr_text)[4].innerText;
-    eventData.push([snap.key(),event_title,img_url,time,location,description,timeChronoSt,timeChronoEn]); 
+    eventData.push([snap.key(),event_title,img_url,time,location,description,timeChronoSt,timeChronoEn,null]); 
     changeDisplay();
   });
 
@@ -140,4 +141,3 @@
         var h = d[g]('body')[0];h.appendChild(s); 
     }
   }
-
