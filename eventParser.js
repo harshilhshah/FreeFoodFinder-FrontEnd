@@ -8,7 +8,7 @@
   var eventData = [];
   var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", 
             "drinks", "punch", "serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
-            "burrito", "bagel", "poporn", " ice ", "cream", "donut", "beer", "free food", 
+            "burrito", "bagel", "poporn", "cream", "donut", "beer", "free food", 
             "subs", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
             "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "tacos"
         ];  
