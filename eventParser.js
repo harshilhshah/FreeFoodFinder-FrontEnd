@@ -1,4 +1,4 @@
-  var def_img = "http://previews.123rf.com/images/carmenbobo/carmenbobo1405/carmenbobo140500482/28389907-Stamp-with-text-free-food-inside-vector-illustration-Stock-Vector.jpg";
+  var def_img = "def.jpg";
   var myFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/events");
   var myFBFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/fb");
   var ruRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/rss");
@@ -117,8 +117,7 @@
       $('#event_box').append("<div class=\"row item\"><div class=\"col-sm-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + 
         "\" height='80' width='190'/><br></div><div class='col-sm-10'><h4 class='nomargin'>" + item[1] + 
         "</h4><span class='addtocalendar atc-style-button-icon'><a class='atcb-link' tabindex='1'>"
-        + "<img src='https://addtocalendar.com/static/cal-icon/cal-bw-01.png' width='22'>"
-        + "</a><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
+        + "<img src='cal.png' width='22'></a><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
         "<var class='atc_date_end'>" + item[7] + "</var><var class='atc_timezone'>America/New_York</var>" + 
         "<var class='atc_title'>" + item[1] + "</var><var class='atc_description'>" + item[5] + "</var>" + 
         "<var class='atc_location'>" + item[4] + "</var></var></span><em class='time'>" + item[3] 
