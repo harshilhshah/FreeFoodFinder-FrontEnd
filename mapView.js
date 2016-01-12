@@ -1,4 +1,4 @@
-var map;
+  var map;
   var marker;
   var iter;
   var markers = [];
