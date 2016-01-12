@@ -7,8 +7,8 @@
   var today = moment().format("YYYY-MM-DD");
   var eventData = [];
   var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", 
-            "drinks", "punch", "serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
-            "burrito", "bagel", "poporn", "cream", "donut", "beer", "free food", 
+            "drinks", "punch", " serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
+            "burrito", "bagel", "poporn", "cream", "donut", "beer", "free food", "dessert",
             "subs", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
             "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "tacos"
         ];  
@@ -29,7 +29,7 @@
     var time = timeParser.parseDate(data.body,moment(data.created));
     if(time == null || moment(time).format("YYYY-MM-DD") < today) return;
     var timeChronoSt = moment(time).format("YYYY-MM-DD hh:mm:ss A");
-    time = moment(time).format("dddd, MMM D (h:mm A)");
+    time = moment(time).format("dddd, MMMM D, YYYY (h:mm A)");
     eventData.push([data.created,data.subject,def_img,time,"Check description",data.body,timeChronoSt,timeChronoSt,null]);
     changeDisplay();
   });
@@ -39,7 +39,7 @@
       var data = dataPair.val();
       if(getTags(data.description).length > 1) {
         var location = (data.place === undefined || data.place.location === undefined) ? " " : data.place.location.street + ", " + data.place.location.city + " " + data.place.location.state;
-        var time = moment(data.start_time).format("dddd, MMM D (h:mm A");
+        var time = moment(data.start_time).format("dddd, MMMM D, YYYY (h:mm A");
         var timeChronoSt = moment(data.start_time).format("YYYY-MM-DD hh:mm:ss A");
         var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
         time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";

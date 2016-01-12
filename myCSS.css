@@ -24,6 +24,16 @@ span.glyphicon{
   margin-right: 7px;
 }
 
+.myfooter{
+  text-align:center;
+  color: rgb(255, 255, 255);
+  background-color: #BB0022;
+}
+
+.myfooter > a{
+  color: rgb(255, 255, 255);
+}
+
 .nav-tabs{
   background-color: #BB0022;
 }

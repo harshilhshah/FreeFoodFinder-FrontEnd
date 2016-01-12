@@ -13,54 +13,7 @@
   <script src="https://maps.googleapis.com/maps/api/js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script>
-  var map;
-  var marker;
-  var iter;
-  var markers = [];
-  var infowindow = new google.maps.InfoWindow();
-
-
-  $(document).ready(function(){
-    $(".nav-tabs a").click(function(){
-        $(this).tab('show');
-    });
-    $('.nav-tabs a').on('shown.bs.tab', function(event){
-        if($(event.target).text() == " Map View")
-          initialize();
-    });
-  });
-  function initialize () {
-        var mapCanvas = document.getElementById('map');
-        var mapOptions = {
-          center: new google.maps.LatLng(40.505, -74.45),
-          zoom: 12,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        map = new google.maps.Map(mapCanvas, mapOptions);
-        for(var i = 0; i < eventData.length; i++){
-          if(eventData[i][8] != null)
-          markers.push([eventData[i][1],eventData[i][8]['lat'],eventData[i][8]['lng']]);
-        }
-        addMarkers();
-      }
-
-  function addMarkers(){
-    for(iter = 0; iter < markers.length; iter++){
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(markers[iter][1], markers[iter][2]),
-        map: map
-      });
-
-      google.maps.event.addListener(marker, 'click', (function(marker, iter) {
-            return function() {
-              infowindow.setContent(markers[iter][0]);
-              infowindow.open(map, marker);
-            }
-          })(marker, iter));
-    }
-  }
-      </script>
+  <script src="addToCalendar.js"></script>
 </head>
 <body>
 
@@ -79,7 +32,11 @@
       </div>
     </div>
   </div>
-  <div class="panel-footer text-center">This website gets event data from other official rutgers websites so it holds no responsibility for any events.</div>
+  <div class="panel-footer text-center myfooter">
+    <a href="mailto:harshilhshah@yahoo.com" class="btn btn-small btn-success">Contact Me</a>
+    <br/>
+    This website gets event data from other official rutgers websites so it holds no responsibility for any events.
+  </div>
 
   <script src="eventParser.js"></script>
 
