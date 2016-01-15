@@ -10,7 +10,7 @@
         $(this).tab('show');
     });
     $('.nav-tabs a').on('shown.bs.tab', function(event){
-        if($(event.target).text() == " Map View")
+        if($(event.target).text() == "Map View")
           initialize();
     });
   });

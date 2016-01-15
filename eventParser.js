@@ -38,13 +38,22 @@
     snap.forEach(function(dataPair) {
       var data = dataPair.val();
       if(getTags(data.description).length > 1) {
-        var location = (data.place === undefined || data.place.location === undefined) ? " " : data.place.location.street + ", " + data.place.location.city + " " + data.place.location.state;
+        var location = " ";
+        var latlng;
+        if(data.place !== undefined){
+          if(data.place.location !== undefined){
+            location = data.place.location.street + ", " + data.place.location.city + " " + data.place.location.state;
+            latlng = {lat: data.place.location.latitude, lng: data.place.location.longitude};
+          }else{
+            location = data.place.name;
+          }
+        } 
         var time = moment(data.start_time).format("dddd, MMMM D, YYYY (h:mm A");
         var timeChronoSt = moment(data.start_time).format("YYYY-MM-DD hh:mm:ss A");
         var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
         time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";
         var img_url = data.picture.data.url;
-        eventData.push([data.id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,null]);
+        eventData.push([data.id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
         changeDisplay();
       }
     });
