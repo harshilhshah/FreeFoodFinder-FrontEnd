@@ -86,16 +86,16 @@
         var t_split = time.split(') - ');
         timeChronoSt = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("YYYY-MM-DD hh:mm:ss A");
         timeChronoEn = moment(t_split[1],"dddd, MMMM D, YYYY (h:mm A)").format("YYYY-MM-DD hh:mm:ss A");
-        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMMM D (h:mm A)") + 
+        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMMM D, YYYY (h:mm A)") + 
           moment(t_split[1],"dddd, MMMM D, YYYY (h:mm A)").format(" - MMMM D (h:mm A)");
     }else if(time.indexOf("M -")){
         var t_split = time.split(' - ');
         timeChronoSt = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("YYYY-MM-DD hh:mm:ss A");
         timeChronoEn = moment(t_split[1],"h:mm A)").format("YYYY-MM-DD hh:mm:ss A");
-        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMMM D (h:mm A") +
+        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMMM D, YYYY (h:mm A") +
           moment(t_split[1],"h:mm A)").format(" - h:mm A)");
     }else{
-        time = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("dddd, MMMM D (h:mm A)");
+        time = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("dddd, MMMM D, YYYY (h:mm A)");
         timeChronoSt = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("YYYY-MM-DD hh:mm:ss A");
         timeChronoEn = timeChronoSt;
     }
