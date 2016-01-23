@@ -3,9 +3,11 @@
   var myFBFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/fb");
   var ruRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/rss");
   var clRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/collegiatelinkrss");
+  var postRef = new Firebase("https://crackling-heat-4631.firebaseio.com/posts");
   var timeParser = new chrono.Chrono();
   var today = moment().format("YYYY-MM-DD");
   var eventData = [];
+  var postData = [];
   var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", 
             "drinks", "punch", " serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
             "burrito", "bagel", "poporn", "cream", "donut", "beer", "free food", "dessert",
@@ -105,6 +107,18 @@
     changeDisplay();
   });
 
+  postRef.on("child_added", function(snap){
+      var data = snap.val();
+      if(data.feed != null){
+        data.feed.forEach(function(dataPair){
+          if(dataPair.message === undefined) return;
+           postData.push([dataPair.id,data.name, data.img_url, dataPair.created_time,
+            dataPair.message, dataPair.full_picture]);
+        });
+      }
+      displayPost();
+  });
+
   function changeDisplay(){
     $('#event_box').html("");
     eventData.sort(function(a,b){
@@ -118,6 +132,16 @@
       }
     };
     display();
+  }
+
+  function displayPost(){
+    $('#post_box').html("");
+    for(var xs = 0; xs < postData.length; xs++){
+      $('#post_box').append("<div class=\"post-card\"><div class='header'><img class='card-avatar' src=\"" 
+        + postData[xs][2] +"\" height='50' width='50'/><div class='post-title'>" 
+        + postData[xs][1] + "</div></div><div class='trunc'>" + postData[xs][4] + "<br><img class='img-responsive' src=\"" 
+        + postData[xs][5] + "\" />" + "</div>");
+    }
   }
 
   function display(){
