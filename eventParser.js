@@ -10,7 +10,7 @@
   var postData = [];
   var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", 
             "drinks", "punch", " serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
-            "burrito", "bagel", "poporn", "cream", "donut", "beer", "free food", "dessert",
+            "burrito", "bagel", "poporn", "cream", "donut", "beer", "free food", "dessert", "chocolate",
             "subs", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
             "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "tacos"
         ];  
@@ -32,7 +32,8 @@
     if(time == null || moment(time).format("YYYY-MM-DD") < today) return;
     var timeChronoSt = moment(time).format("YYYY-MM-DD hh:mm:ss A");
     time = moment(time).format("dddd, MMMM D, YYYY (h:mm A)");
-    eventData.push([data.created,data.subject,def_img,time,"Check description",data.body,timeChronoSt,timeChronoSt,null]);
+    var b = data.body.replace(/-|=|(?:https?|ftp):\/\/[\n\S]+/g, '');
+    eventData.push([data.created,data.subject,def_img,time,"Check description",b,timeChronoSt,timeChronoSt,null]);
     changeDisplay();
   });
 
@@ -111,7 +112,7 @@
       var data = snap.val();
       if(data.feed != null){
         data.feed.forEach(function(dataPair){
-          if(dataPair.message === undefined) return;
+          if(dataPair.message === undefined || getTags(dataPair.message).length < 1) return;
            postData.push([dataPair.id,data.name, data.img_url, dataPair.created_time,
             dataPair.message, dataPair.full_picture]);
         });
