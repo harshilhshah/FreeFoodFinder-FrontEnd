@@ -10,12 +10,15 @@
   var postData = [];
   var food_tags = [ "appetizer", "snack", "pizza", "lunch", "dinner", "breakfast", "meal", "candy", 
             "drinks", "punch", " serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
-            "burrito", "bagel", "poporn", "cream", "donut", "beer", "free food", "dessert", "chocolate",
-            "subs", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
+            "burrito", "bagel", "popcorn", "cream", "donut", "beer", "free food", "dessert", "chocolate",
+            "subs ", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
             "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "tacos"
         ];  
 
   function getTags(str){
+    if((str.toLowerCase().indexOf('free') == -1 && str.toLowerCase().indexOf('will be') == -1)
+      || str.toLowerCase().indexOf('community') !== -1)
+      return "";
     var ret = "";
     for(var i = 0; i < food_tags.length; i++){
       if(str != undefined && str.toLowerCase().indexOf(food_tags[i]) !== -1){
@@ -113,7 +116,7 @@
       if(data.feed != null){
         data.feed.forEach(function(dataPair){
           if(dataPair.message === undefined || getTags(dataPair.message).length < 1) return;
-           postData.push([dataPair.id,data.name, data.img_url, dataPair.created_time,
+           postData.push([dataPair.id,data.name, data.img_url, moment(dataPair.created_time).format('ddd, MMM D, YYYY'),
             dataPair.message, dataPair.full_picture]);
         });
       }
@@ -140,7 +143,8 @@
     for(var xs = 0; xs < postData.length; xs++){
       $('#post_box').append("<div class=\"post-card\"><div class='header'><img class='card-avatar' src=\"" 
         + postData[xs][2] +"\" height='50' width='50'/><div class='post-title'>" 
-        + postData[xs][1] + "</div></div><div class='trunc'>" + postData[xs][4] + "<br><img class='img-responsive' src=\"" 
+        + postData[xs][1] + "</div><div class='post-date'>" + postData[xs][3] + "</div></div><div class='trunc'>"
+        + postData[xs][4] + "<br><img class='img-responsive' src=\"" 
         + postData[xs][5] + "\" />" + "</div>");
     }
   }
