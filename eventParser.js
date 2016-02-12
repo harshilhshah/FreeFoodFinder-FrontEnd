@@ -16,9 +16,6 @@
         ];  
 
   function getTags(str){
-    if((str.toLowerCase().indexOf('free') == -1 && str.toLowerCase().indexOf('will be') == -1)
-      || str.toLowerCase().indexOf('community') !== -1)
-      return "";
     var ret = "";
     for(var i = 0; i < food_tags.length; i++){
       if(str != undefined && str.toLowerCase().indexOf(food_tags[i]) !== -1){

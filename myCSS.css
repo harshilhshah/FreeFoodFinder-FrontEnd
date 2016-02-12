@@ -67,12 +67,6 @@ span.glyphicon{
    text-align: center;
 }
 
-#post_box{
-  justify-content: center;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .post-date{
   color: gray;
 }
@@ -100,7 +94,10 @@ span.glyphicon{
       position:relative;
       margin-bottom:0px; 
       padding:20px 20px; 
-  
+}
+
+.post-card > .trunc > img{
+  height: 20%;
 }
 
 .card-avatar{
