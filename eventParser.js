@@ -56,7 +56,8 @@
         var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
         time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";
         var img_url = data.picture.data.url;
-        eventData.push([data.id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
+        var id = "https://www.facebook.com/events/" + data.id
+        eventData.push([id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
         changeDisplay();
       }
     });
@@ -71,7 +72,7 @@
     var timeChronoEn = moment(data.endTime,"YYYY-MM-DD hh:mm:ss ddd").format("YYYY-MM-DD hh:mm:ss A");
     var location = data.location + ", " + data.campus;
     var latlng = {lat: data.lat, lng: data.lng};
-    eventData.push([snap.key(),data.title,def_img,time,location,data.description,timeChronoSt,timeChronoEn,latlng]); 
+    eventData.push([data.link,data.title,def_img,time,location,data.description,timeChronoSt,timeChronoEn,latlng]); 
     changeDisplay();
   });
 
@@ -104,7 +105,7 @@
     }
     var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
     var description = $.parseHTML(descr_text)[4].innerText;
-    eventData.push([snap.key(),event_title,img_url,time,location,description,timeChronoSt,timeChronoEn,null]); 
+    eventData.push([data.link,event_title,img_url,time,location,description,timeChronoSt,timeChronoEn,null]); 
     changeDisplay();
   });
 
@@ -150,8 +151,8 @@
     for(var z = 0; z < eventData.length; z++){
       var item = eventData[z];
       $('#event_box').append("<div class=\"row item\"><div class=\"col-sm-2\"><img class='img-responsive img-rounded' src=\"" + item[2] + 
-        "\" height='80' width='190'/><br></div><div class='col-sm-10'><h4 class='nomargin'>" + item[1] + 
-        "</h4><span class='addtocalendar atc-style-button-icon'><a class='atcb-link' tabindex='1'>"
+        "\" height='80' width='190'/><br></div><div class='col-sm-10'><a href='"+ item[0] +"' class='dark-title'><h4 class='nomargin'>" 
+        + item[1] + "</h4></a><span class='addtocalendar atc-style-button-icon'><a class='atcb-link' tabindex='1'>"
         + "<img src='cal.png' width='22'></a><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
         "<var class='atc_date_end'>" + item[7] + "</var><var class='atc_timezone'>America/New_York</var>" + 
         "<var class='atc_title'>" + item[1] + "</var><var class='atc_description'>" + item[5] + "</var>" + 

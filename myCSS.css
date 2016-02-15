@@ -57,6 +57,10 @@ span.glyphicon{
   font-weight: bold;
 }
 
+.dark-title{
+  color: black;
+}
+
 #add_post{
   margin-top: 20px;
 }
