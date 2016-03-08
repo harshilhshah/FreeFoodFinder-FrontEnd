@@ -118,6 +118,9 @@
             dataPair.message, dataPair.full_picture]);
         });
       }
+      postData.sort(function(a,b){
+        return new Date(b[3]) - new Date(a[3]);
+      })
       displayPost();
   });
 
@@ -129,7 +132,7 @@
       return da - db;
     });
     for (var i = 1; i < eventData.length; i++) {
-      if(eventData[i][1] == eventData[i-1][1]){
+      if(eventData[i][1] == eventData[i-1][1] || new Date(eventData[i][6]) < new Date(today)){
         eventData.splice(i,1);
       }
     };
