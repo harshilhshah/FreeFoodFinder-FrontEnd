@@ -25,14 +25,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-MJ8F7C');</script>
 <!-- End Google Tag Manager -->
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=140671119617216";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
   <p class="title">Free Food @ RU</p>
   <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#list" style="border:none;background-color:#BB0022;color:white">List View</a></li>
@@ -41,6 +33,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </ul>
   <div class="tab-content">
     <div id="list" class="tab-pane fade in active">
+      <div id="notice" class="alert alert-info container" style="display: none;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      </div>
       <section id='event_box' class='container'></section>
     </div>
     <div id="mapview" class="tab-pane fade">
@@ -53,10 +48,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <section id='post_box' class='container-fluid'></section>
     </div>
   </div>
-  <div style="text-align: center">    
-    <div class="fb-page" style="display:inline-block;" data-href="https://www.facebook.com/rufreefood/" data-height="200" data-small-header="true" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/rufreefood/"><a href="https://www.facebook.com/rufreefood/">Free Food at RU</a></blockquote></div></div>
-  </div>
-  <div class="panel-footer text-center myfooter">
+  <div class="text-center myfooter">
     <a href="about.html">About</a>
     | 
     <a href="mailto:rufreefood.club@domainsbyproxy.com">Contact Us</a>

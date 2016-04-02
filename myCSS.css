@@ -25,7 +25,7 @@ span.glyphicon{
 }
 
 .myfooter{
-  background-color: rgba(233, 234, 239, 0.15);
+  padding-bottom: 20px;
 }
 
 .myfooter > a{

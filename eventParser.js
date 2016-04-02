@@ -4,6 +4,7 @@
   var ruRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/rss");
   var clRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/collegiatelinkrss");
   var postRef = new Firebase("https://crackling-heat-4631.firebaseio.com/posts");
+  var noticeRef = new Firebase("https://crackling-heat-4631.firebaseio.com/notice");
   var timeParser = new chrono.Chrono();
   var today = moment().format("YYYY-MM-DD");
   var eventData = [];
@@ -24,6 +25,11 @@
     }
     return ret;
   }
+
+  noticeRef.on("value", function(snap){
+    if(snap.val().length > 1) $('#notice').css('display','block').append(snap.val());
+  });
+
 
   myFirebaseRef.on("child_added", function(snapshot) {
     var data = snapshot.val();
