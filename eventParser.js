@@ -64,9 +64,9 @@
         var img_url = data.picture.data.url;
         var id = "https://www.facebook.com/events/" + data.id
         eventData.push([id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
-        changeDisplay();
       }
     });
+    changeDisplay();
   });
 
   ruRSSRef.on("child_added", function(snap) {
@@ -142,6 +142,9 @@
         eventData.splice(i,1);
       }
     };
+    if(new Date(eventData[0][6]) < new Date(today)){
+      eventData.splice(0,1);
+    }
     display();
   }
 
