@@ -26,6 +26,29 @@
     return ret;
   }
 
+  function parseClubEvents(dataPair) {
+    var data = dataPair.val();
+    if(getTags(data.description).length < 1) return;
+    var location = " ";
+    var latlng;
+    if(data.place !== undefined){
+      if(data.place.location !== undefined){
+        location = data.place.location.street + ", " + data.place.location.city + " " + data.place.location.state;
+        latlng = {lat: data.place.location.latitude, lng: data.place.location.longitude};
+      }else{
+        location = data.place.name;
+      }
+    } 
+    var time = moment(data.start_time).format("dddd, MMMM D, YYYY (h:mm A");
+    var timeChronoSt = moment(data.start_time).format("YYYY-MM-DD hh:mm:ss A");
+    var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
+    time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";
+    var img_url = (data.picture !== undefined) ? data.picture.data.url : "";
+    var id = "https://www.facebook.com/events/" + data.id
+    eventData.push([id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
+  
+  }
+
   noticeRef.on("value", function(snap){
     if(snap.val().length > 1) $('#notice').css('display','block').append(snap.val());
   });
@@ -44,41 +67,12 @@
   });
 
   myFBFirebaseRef.on("child_added", function(snap) {
-    snap.forEach(function(dataPair) {
-      var data = dataPair.val();
-      if(getTags(data.description).length > 1) {
-        var location = " ";
-        var latlng;
-        if(data.place !== undefined){
-          if(data.place.location !== undefined){
-            location = data.place.location.street + ", " + data.place.location.city + " " + data.place.location.state;
-            latlng = {lat: data.place.location.latitude, lng: data.place.location.longitude};
-          }else{
-            location = data.place.name;
-          }
-        } 
-        var time = moment(data.start_time).format("dddd, MMMM D, YYYY (h:mm A");
-        var timeChronoSt = moment(data.start_time).format("YYYY-MM-DD hh:mm:ss A");
-        var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
-        time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";
-        var img_url = data.picture.data.url;
-        var id = "https://www.facebook.com/events/" + data.id
-        eventData.push([id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
-      }
-    });
+    snap.forEach(parseClubEvents);
     changeDisplay();
   });
 
   ruRSSRef.on("child_added", function(snap) {
-    var data = snap.val();
-    if(getTags(data.description).length < 1) return;
-    var time = moment(data.startTime,"YYYY-MM-DD hh:mm:ss ddd").format("dddd, MMMM D, YYYY (h:mm A")
-      + moment(data.endTime,"YYYY-MM-DD hh:mm:ss ddd").format(" - h:mm A)");
-    var timeChronoSt = moment(data.startTime,"YYYY-MM-DD hh:mm:ss ddd").format("YYYY-MM-DD hh:mm:ss A");
-    var timeChronoEn = moment(data.endTime,"YYYY-MM-DD hh:mm:ss ddd").format("YYYY-MM-DD hh:mm:ss A");
-    var location = data.location + ", " + data.campus;
-    var latlng = {lat: data.lat, lng: data.lng};
-    eventData.push([data.link,data.title,def_img,time,location,data.description,timeChronoSt,timeChronoEn,latlng]); 
+    snap.forEach(parseClubEvents);
     changeDisplay();
   });
 
