@@ -1,8 +1,6 @@
   var def_img = "def.jpg";
   var myFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/events");
-  var myFBFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/fb");
-  var ruRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/rss");
-  var clRSSRef = new Firebase("https://crackling-heat-4631.firebaseio.com/collegiatelinkrss");
+  var sourceRef = new Firebase("https://crackling-heat-4631.firebaseio.com/source");
   var postRef = new Firebase("https://crackling-heat-4631.firebaseio.com/posts");
   var noticeRef = new Firebase("https://crackling-heat-4631.firebaseio.com/notice");
   var timeParser = new chrono.Chrono();
@@ -43,10 +41,9 @@
     var timeChronoSt = moment(data.start_time).format("YYYY-MM-DD hh:mm:ss A");
     var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
     time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";
-    var img_url = (data.picture !== undefined) ? data.picture.data.url : "";
+    var img_url = (data.picture !== undefined) ? data.picture.data.url : def_img;
     var id = "https://www.facebook.com/events/" + data.id
     eventData.push([id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
-  
   }
 
   noticeRef.on("value", function(snap){
@@ -66,48 +63,12 @@
     changeDisplay();
   });
 
-  myFBFirebaseRef.on("child_added", function(snap) {
-    snap.forEach(parseClubEvents);
+  sourceRef.on("child_added", function(snap) {
+    snap.forEach(function(datap){
+      datap.forEach(parseClubEvents);
+    });
     changeDisplay();
-  });
-
-  ruRSSRef.on("child_added", function(snap) {
-    snap.forEach(parseClubEvents);
-    changeDisplay();
-  });
-
-  clRSSRef.on("child_added", function(snap) {
-    var data = snap.val();
-    if(getTags(data.description).length < 1) return;
-    var event_title = data.title;
-    if (event_title == null) event_title = "No Title";
-    var img_url = def_img;
-    var descr_text = $('<div/>').html(data.description).text();
-    var time = $.parseHTML(descr_text)[0].innerText;
-    var timeChronoSt = today;
-    var timeChronoEn = today;
-    if(time.indexOf(") -") !== -1){
-        var t_split = time.split(') - ');
-        timeChronoSt = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("YYYY-MM-DD hh:mm:ss A");
-        timeChronoEn = moment(t_split[1],"dddd, MMMM D, YYYY (h:mm A)").format("YYYY-MM-DD hh:mm:ss A");
-        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMMM D, YYYY (h:mm A)") + 
-          moment(t_split[1],"dddd, MMMM D, YYYY (h:mm A)").format(" - MMMM D (h:mm A)");
-    }else if(time.indexOf("M -")){
-        var t_split = time.split(' - ');
-        timeChronoSt = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("YYYY-MM-DD hh:mm:ss A");
-        timeChronoEn = moment(t_split[1],"h:mm A)").format("YYYY-MM-DD hh:mm:ss A");
-        time = moment(t_split[0],"dddd, MMMM D, YYYY (h:mm A").format("dddd, MMMM D, YYYY (h:mm A") +
-          moment(t_split[1],"h:mm A)").format(" - h:mm A)");
-    }else{
-        time = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("dddd, MMMM D, YYYY (h:mm A)");
-        timeChronoSt = moment(time,"dddd, MMMM D, YYYY (h:mm A)").format("YYYY-MM-DD hh:mm:ss A");
-        timeChronoEn = timeChronoSt;
-    }
-    var location = $.parseHTML(descr_text)[2].innerText.replace("Location: ","");
-    var description = $.parseHTML(descr_text)[4].innerText;
-    eventData.push([data.link,event_title,img_url,time,location,description,timeChronoSt,timeChronoEn,null]); 
-    changeDisplay();
-  });
+  });  
 
   postRef.on("child_added", function(snap){
       var data = snap.val();
