@@ -1,5 +1,4 @@
   var def_img = "def.jpg";
-  var myFirebaseRef = new Firebase("https://crackling-heat-4631.firebaseio.com/events");
   var sourceRef = new Firebase("https://crackling-heat-4631.firebaseio.com/source");
   var postRef = new Firebase("https://crackling-heat-4631.firebaseio.com/posts");
   var noticeRef = new Firebase("https://crackling-heat-4631.firebaseio.com/notice");
@@ -48,19 +47,6 @@
 
   noticeRef.on("value", function(snap){
     if(snap.val().length > 1) $('#notice').css('display','block').append(snap.val());
-  });
-
-
-  myFirebaseRef.on("child_added", function(snapshot) {
-    var data = snapshot.val();
-    if(getTags(data.body).length < 1) return;
-    var time = timeParser.parseDate(data.body,moment(data.created));
-    if(time == null || moment(time).format("YYYY-MM-DD") < today) return;
-    var timeChronoSt = moment(time).format("YYYY-MM-DD hh:mm:ss A");
-    time = moment(time).format("dddd, MMMM D, YYYY (h:mm A)");
-    var b = data.body.replace(/-|=|(?:https?|ftp):\/\/[\n\S]+/g, '');
-    eventData.push([data.created,data.subject,def_img,time,"Check description",b,timeChronoSt,timeChronoSt,null]);
-    changeDisplay();
   });
 
   sourceRef.on("child_added", function(snap) {
