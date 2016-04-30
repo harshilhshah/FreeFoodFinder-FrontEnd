@@ -94,13 +94,15 @@ span.glyphicon{
 
 .post-title{
   font-size: 1.25em;
+  height: 25px;
+  overflow: hidden;
 }
 
 .post-card{
   margin-top:1em;
   background-color: white;
   box-shadow: 1px 1px 3px #888;
-  min-width: 300px;
+  min-width: 280px;
   width: 30%;
   margin: 20px;
   float: left;
@@ -112,13 +114,21 @@ span.glyphicon{
 }
 
 .post-card > .trunc{
-      position:relative;
-      margin-bottom:0px; 
-      padding:20px 20px; 
+  position:relative;
+  margin-bottom:0px; 
+  padding:20px 20px; 
+  height: 400px;
 }
 
 .post-card > .trunc > img{
-  height: 20%;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.post-card > .trunc > .post-message{
+  overflow: hidden;
 }
 
 .card-avatar{

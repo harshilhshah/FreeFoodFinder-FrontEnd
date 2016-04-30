@@ -2,7 +2,6 @@
   var sourceRef = new Firebase("https://crackling-heat-4631.firebaseio.com/source");
   var postRef = new Firebase("https://crackling-heat-4631.firebaseio.com/posts");
   var noticeRef = new Firebase("https://crackling-heat-4631.firebaseio.com/notice");
-  var timeParser = new chrono.Chrono();
   var today = moment().format("YYYY-MM-DD");
   var eventData = [];
   var postData = [];
@@ -41,8 +40,7 @@
     var timeChronoEn = (data.end_time) ? moment(data.end_time).format("YYYY-MM-DD hh:mm:ss A") : timeChronoSt;
     time += (data.end_time) ? " - " + moment(data.end_time).format("h:mm A)") : ")";
     var img_url = (data.picture !== undefined) ? data.picture.data.url : def_img;
-    var id = "https://www.facebook.com/events/" + data.id
-    eventData.push([id,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
+    eventData.push([data.link,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
   }
 
   noticeRef.on("value", function(snap){
@@ -75,7 +73,7 @@
     $('#event_box').html("");
     eventData.sort(function(a,b){
       var da = (a[3].indexOf(') -') != -1) ? new Date(a[3]) : new Date(a[3].split(' - ')[0]);
-      var db = (b[3].indexOf(') -') != -1) ? new Date(b[3]) : new Date(b[3].split(' - ')[0]);      
+      var db = (b[3].indexOf(') -') != -1) ? new Date(b[3]) : new Date(b[3].split(' - ')[0]);    
       return da - db;
     });
     for (var i = 1; i < eventData.length; i++) {
@@ -95,8 +93,7 @@
       $('#post_box').append("<div class=\"post-card\"><div class='header'><img class='card-avatar' src=\"" 
         + postData[xs][2] +"\" height='50' width='50'/><div class='post-title'>" 
         + postData[xs][1] + "</div><div class='post-date'>" + postData[xs][3] + "</div></div><div class='trunc'>"
-        + postData[xs][4] + "<br><img class='img-responsive' src=\"" 
-        + postData[xs][5] + "\" />" + "</div>");
+        + "<img class='img-responsive' src=\"" + postData[xs][5] + "\" /><div class='post-message'>" + postData[xs][4] + "</div></div>");
     }
   }
 
