@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+    <html>
+    <header>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    </header>
+    <body>
+
+    <h1 id = "time" style = "font-size:450%; text-align: center; font-family: 'Lucida Console', Monaco, monospace">Videos</h1>
+
+    <div id = "choice"></div>
+	
+	<script type="text/javascript">
+
+	var d  = new Date();
+	var month = new Array();
+	month[0] = "January";
+	month[1] = "February";
+	month[2] = "March";
+	month[3] = "April";
+	month[4] = "May";
+	month[5] = "June";
+	month[6] = "July";
+	month[7] = "August";
+	month[8] = "September";
+	month[9] = "October";
+	month[10] = "November";
+	month[11] = "December";
+	function nth(d) {
+	 	if(d>3 && d<21) return 'th'; // thanks kennebec
+	  	switch (d % 10) {
+	        case 1:  return "st";
+	        case 2:  return "nd";
+	        case 3:  return "rd";
+		    default: return "th";
+	    } 
+	}
+
+	var sa_yql = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22http%3A%2F%2Fwww.desitvbox.me%2Fchakravartin-ashoka-samrat-"+d.getDate()+nth(d.getDate())+"-"+month[d.getMonth()]+"-"+d.getFullYear()+"-episode-watch-online%2F%22%20and%20xpath%3D%22%2F%2Fp%2Fa%22&format=json&diagnostics=true&callback=";
+
+		$.ajax({
+            type: 'GET', 
+            url: sa_yql, 
+            dataType: 'json',
+            success: function(data) { 
+            	console.log(data);
+            	var part1 = data["query"]["results"]["a"][2]["href"];
+                var part2 = data["query"]["results"]["a"][4]["href"];
+                var vlink = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22" + encodeURI(part1) +  "%22%20and%20xpath%3D%22%2F%2Fiframe%22&format=json&diagnostics=true&callback=";
+                var vlink2 = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22" + encodeURI(part2) +  "%22%20and%20xpath%3D%22%2F%2Fiframe%22&format=json&diagnostics=true&callback=";
+                getFrame(vlink);
+                getFrame(vlink2);
+            }
+        });
+
+	function getFrame(link){
+
+		$.ajax({
+            type: 'GET', 
+            url: link, 
+            dataType: 'json',
+            success: function(data) { 
+            	console.log(data["query"]);
+                var frames = data["query"]["results"]["iframe"];
+                for (var i = 0; i < frames.length; i++) {
+                	console.log(frames[i]);
+                	if(frames[i]["src"].includes("dailymotion")){
+                		var fr_link = frames[i]["src"]
+						$("#choice").append("<iframe src=\"" + fr_link + "\"></iframe>");
+                		break;
+                	}
+                };
+            }
+        });
+	}
+
+	var yqlLink = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%20%3D%20%22https%3A%2F%2Fapi.dailymotion.com%2Fuser%2Fx1h55kb%2Fvideos%22&format=json&diagnostics=true&callback="
+
+	function getVideo(id){
+		var link_api = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%20%3D%20%22https%3A%2F%2Fapi.dailymotion.com%2Fvideo%2F"+id.toString()+"%3Ffields%3Dembed_html%22&format=json&diagnostics=true&callback=";
+		$.ajax({
+            type: 'GET', 
+            url: link_api, 
+            dataType: 'json',
+            success: function(data) { 
+            	var embed_frame = data["query"]["results"]["embed_html"];
+            	embed_frame = embed_frame.replace('//','https://');
+                $("#choice").append(embed_frame + "<br>");
+            }
+        });
+	}
+
+	$.ajax({
+            type: 'GET', 
+            url: yqlLink, 
+            dataType: 'json',
+            success: function(data) { 
+                var videos = data["query"]["results"]["json"]["list"];
+                for (var i = 0; i < videos.length; i++) {
+                	if (videos[i]["title"].includes('hanu') && videos[i]["title"].toLowerCase().includes(month[d.getMonth()].toLowerCase())){
+                		var id = videos[i]["id"];
+                		getVideo(id);
+                	}
+                };
+            }
+        });
+
+	</script>
+
+
+
+    </body>
+    </html>
