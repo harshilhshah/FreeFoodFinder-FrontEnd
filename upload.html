@@ -1,85 +1,227 @@
 <!DOCTYPE html>
-    <html>
-    <header>
+<html>
+<header>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    </header>
-    <body>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style type="text/css">
+    .player_div{
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    @media(max-width: 480px) {
+  h4 {
+    font-size: 10pt;
+  }
+}
+.center{
+  text-align: center;
+}
+.skydive{
+  width: 250px;
+  height: 200px;
+  margin: 0 auto 25px;
+  padding-top: 25px;
+}
+.container{
+  margin-top: 20px;
+}
+.title{
+  margin: 0px; 
+  font-size: 9.0vw; 
+  font-weight: 200; 
+  font-family: 'Amaranth', sans-serif;
+  text-align:center;
+  color: rgb(255, 255, 255);
+  background-color: #BB0022;
+}
+.about{
+  color:white;
+  font-size:20px;
+}
+.nomargin{
+  margin-top: 0px; 
+}
+.time,.loc,.tags{
+  margin-left: 10px;
+}
+span.glyphicon{
+  font-size: 1.3em;
+  margin-top: 5px;
+  margin-right: 7px;
+}
 
-    <h1 id = "time" style = "font-size:450%; text-align: center; font-family: 'Lucida Console', Monaco, monospace">Videos</h1>
+.myfooter{
+  padding-bottom: 20px;
+}
 
-    <div id = "choice"></div>
-	
-	<script type="text/javascript">
+.myfooter > a{
+  color: rgb(10, 10, 10);
+  padding: 0px 10px; 
+}
 
-	var d  = new Date();
-	var month = new Array();
+.nav-tabs{
+  background-color: #BB0022;
+  text-align: center;
+}
 
-	month[0] = "January";
-	month[1] = "February";
-	month[2] = "March";
-	month[3] = "April";
-	month[4] = "May";
-	month[5] = "June";
-	month[6] = "July";
-	month[7] = "August";
-	month[8] = "September";
-	month[9] = "October";
-	month[10] = "November";
-	month[11] = "December";
+.tab-content {
+  background-color: white;
+  padding-top: 20px;
+}
 
-	function nth(d) {
-	 	if(d>3 && d<21) return 'th';
-	  	switch (d % 10) {
-	        case 1:  return "st";
-	        case 2:  return "nd";
-	        case 3:  return "rd";
-		    default: return "th";
-	    } 
-	}
+.nav-tabs > li{
+  width: 32.98%;
+  text-align: center;
+}
 
-    getVideoLink('Sankat Mochan Mahabali Hanumaan');
-    getVideoLink('chakravartin ashoka samrat');
-    getVideoLink('Taarak Mehta Ka Ooltah Chashmah');
+.nav-tabs > li.active,
+.nav-tabs > li:focus{
+  border-bottom: 2px solid yellow;
+}
 
-    function getVideoLink(showname){
-        showname = showname.replace(/\s/g,'-').toLowerCase();
-        var show_episode_link = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22http%3A%2F%2Fwww.desiserials.tv%2F"+showname+"-"+d.getDate()+nth(d.getDate())+"-"+month[d.getMonth()]+"-"+d.getFullYear()+"-watch-online-episode-hd%2F%22%20and%20xpath%3D%22%2F%2Fp%2Fa%22&format=json&diagnostics=true&callback=";
+.nav-tabs > li.active > a,
+.nav-tabs > li > a:hover{
+  font-weight: bold;
+}
 
-        $.ajax({
-            type: 'GET', 
-            url: show_episode_link, 
-            dataType: 'json',
-            success: function(data) { 
-                console.log(data);
-                var part1 = data["query"]["results"]["a"][2]["href"];
-                var part2 = data["query"]["results"]["a"][3]["href"];
-                var vlink = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22" + encodeURI(part1) +  "%22%20and%20xpath%3D%22%2F%2Fiframe%22&format=json&diagnostics=true&callback=";
-                var vlink2 = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22" + encodeURI(part2) +  "%22%20and%20xpath%3D%22%2F%2Fiframe%22&format=json&diagnostics=true&callback=";
-                getFrame(vlink);
-                getFrame(vlink2);
-            }
+.dark-title{
+  color: black;
+}
+
+#add_post{
+  margin-top: 20px;
+}
+
+#posts{
+   background-color:#E9EAED;
+   margin-top: -20px;
+   text-align: center;
+}
+
+.post-date{
+  color: gray;
+}
+
+.post-title{
+  font-size: 1.25em;
+  height: 25px;
+  overflow: hidden;
+}
+
+.post-card{
+  margin-top:1em;
+  background-color: white;
+  box-shadow: 1px 1px 3px #888;
+  min-width: 280px;
+  width: 30%;
+  margin: 20px;
+  float: left;
+  text-align: left;
+}
+
+.post-card > .header{
+  padding:20px 20px 0px 20px;
+}
+
+.post-card > .trunc{
+  position:relative;
+  margin-bottom:0px; 
+  padding:20px 20px; 
+  height: 400px;
+}
+
+.post-card > .trunc > img{
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.post-card > .trunc > .post-message{
+  overflow: hidden;
+}
+
+.card-avatar{
+  float:left;
+  margin:0px 20px 0px 0px;
+}
+
+#map {
+  width: 100%;
+  height: 500px;
+  margin-bottom: 20px;
+}
+
+    </style>
+</header>
+<body>
+
+    <p class="title">Shows</p>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#show1" style="border:none;background-color:#BB0022;color:white">Hanumaan</a></li>
+      <li><a data-toggle="tab" href="#show2" style="border:none;background-color:#BB0022;color:white">Ashoka</a></li>
+      <li><a data-toggle="tab" href="#show3" style="border:none;background-color:#BB0022;color:white">Taarak Mehta</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="show1" class="tab-pane fade in active">
+            <section id='Sankat_Mochan_Mahabali_Hanumaan' class='container-fluid'></section>
+        </div>
+        <div id="show2" class="tab-pane fade">
+            <section id='Chakravartin_Ashoka_Samrat' class='container-fluid'></section>
+        </div>
+        <div id="show3" class="tab-pane fade">
+            <section id='Taarak_Mehta_Ka_Ooltah_Chashmah' class='container-fluid'></section>
+        </div>
+    </div>
+
+<script type="text/javascript">
+
+getEpisodeGuide('Sankat Mochan Mahabali Hanumaan');
+getEpisodeGuide('Chakravartin Ashoka Samrat');
+getEpisodeGuide('Taarak Mehta Ka Ooltah Chashmah');
+
+function getEpisodeGuide(showname){
+    showname = showname.replace(/\s/g,'-');
+    var show_episode_link = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22http%3A%2F%2Fapne.tv%2FHindi-Serial%2F"+showname+"%22%20and%20xpath%20%3D%20'%2F%2Fa%5B%40class%3D%22date_episodes%22%5D'&format=json&diagnostics=true&callback=";
+
+    $.ajax({
+        type: 'GET', 
+        url: show_episode_link, 
+        dataType: 'json',
+        success: function(data) { 
+            console.log(data);
+            var temp = data["query"]["results"]["a"][0]["href"];
+            var enc_part = encodeURI(temp);
+            var episode_link = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%20%3D%20%22"+enc_part+"%22%20and%20xpath%20%3D%20'%2F%2Fdiv%5B%40class%3D%22channel_cont%22%5D'&diagnostics=true"
+            getVideoLinks(showname,episode_link);
+        }
+    });
+
+}
+
+function getVideoLinks(showname, link){
+    showname = showname.replace(/-/g,'_')
+    console.log(showname);
+  $.ajax({
+    type: 'GET', 
+    url: link, 
+    dataType: 'html',
+    success: function(data) { 
+        $(data).find('div[class="channel_cont"]').each(function (index,player_div) {
+            var player_title = $(player_div).find('h2');
+            var playery_link = $(player_div).find('a')[0]['outerHTML'];
+            var link_div = "<div class='player_div'><h2>" + player_title.html() + "</h2>" + playery_link + "</div><hr>"
+            $("#"+showname).append(link_div);
+            //$('h2').children().removeAttr('style');
         });
     }
+});
+}
 
-	function getFrame(link){
-		$.ajax({
-            type: 'GET', 
-            url: link, 
-            dataType: 'json',
-            success: function(data) { 
-                var frames = data["query"]["results"]["iframe"];
-                console.log(frames);
-                if(frames["src"].includes("dailymotion")){
-                	var fr_link = frames["src"].replace('//','https://')
-					$("#choice").append("<iframe src=\"" + fr_link + "\" allowfullscreen=\"allowfullscreen\"></iframe><br>");
-                }
-            }
-        });
-	}
-
-	</script>
+</script>
 
 
 
-    </body>
-    </html>
+</body>
+</html>
