@@ -9,7 +9,7 @@
             "drinks", "punch", " serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
             "burrito", "bagel", "popcorn", "cream", "donut", "beer", "food", "dessert", "chocolate",
             "subs ", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
-            "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "tacos"
+            "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "taco"
         ];  
 
   function getTags(str){
