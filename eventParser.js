@@ -30,6 +30,7 @@
     if(data.place !== undefined){
       if(data.place.location !== undefined){
         location = data.place.location.street + ", " + data.place.location.city + " " + data.place.location.state;
+        location = location.replace('undefined,','').replace(/undefined/g,'').trim();
         latlng = {lat: data.place.location.latitude, lng: data.place.location.longitude};
       }else{
         location = data.place.name;
@@ -73,12 +74,16 @@
     $('#event_box').html("");
     eventData.sort(function(a,b){
       var da = (a[3].indexOf(') -') != -1) ? new Date(a[3]) : new Date(a[3].split(' - ')[0]);
-      var db = (b[3].indexOf(') -') != -1) ? new Date(b[3]) : new Date(b[3].split(' - ')[0]);    
+      var db = (b[3].indexOf(') -') != -1) ? new Date(b[3]) : new Date(b[3].split(' - ')[0]);  
       return da - db;
     });
     for (var i = 1; i < eventData.length; i++) {
       if(eventData[i][1] == eventData[i-1][1] || new Date(eventData[i][6]) < new Date(today)){
-        eventData.splice(i,1);
+        if(eventData[i-1][2] === def_img){
+          eventData.splice(i-1,1);
+        }else{
+          eventData.splice(i,1);
+        }
       }
     };
     if(new Date(eventData[0][6]) < new Date(today)){
