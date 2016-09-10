@@ -9,7 +9,8 @@
             "drinks", "punch", " serving", "pie ",  "cake", "soda", "chicken", "wings", "burger",
             "burrito", "bagel", "popcorn", "cream", "donut", "beer", "food", "dessert", "chocolate",
             "subs ", "hoagie", "sandwich", "turkey", "supper", "brunch", "takeout", "refreshment",
-            "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbecue", "taco"
+            "beverage", "cookie", "brownie", "chips", "soup", "grill", "bbq", "barbeque", "taco",
+            "pretzel"
         ];  
 
   function getTags(str){
@@ -24,7 +25,8 @@
 
   function parseClubEvents(dataPair) {
     var data = dataPair.val();
-    if(getTags(data.description).length < 1) return;
+    var club_name = dataPair.ref().parent().key();
+    if(club_name != 'user_post' && getTags(data.description).length < 1) return;
     var location = " ";
     var latlng;
     if(data.place !== undefined){
