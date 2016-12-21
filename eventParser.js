@@ -1,7 +1,16 @@
-  var def_img = "def.jpg";
-  var sourceRef = new Firebase("https://crackling-heat-4631.firebaseio.com/source");
-  var postRef = new Firebase("https://crackling-heat-4631.firebaseio.com/posts");
-  var noticeRef = new Firebase("https://crackling-heat-4631.firebaseio.com/notice");
+var def_img = "def.jpg";
+var config = {
+  apiKey: "AIzaSyCaHVx1Aesj0QIuSKWo8mBlAitBjQfrpEg",
+  authDomain: "crackling-heat-4631.firebaseapp.com",
+  databaseURL: "https://crackling-heat-4631.firebaseio.com"
+};
+
+firebase.initializeApp(config);
+
+var rootRef = firebase.database().ref();
+var sourceRef = rootRef.child("source");
+var postRef = rootRef.child("posts");
+
   var today = moment().format("YYYY-MM-DD");
   var eventData = [];
   var postData = [];
@@ -25,7 +34,8 @@
 
   function parseClubEvents(dataPair) {
     var data = dataPair.val();
-    var club_name = dataPair.ref().parent().key();
+    console.log(data);
+    var club_name = dataPair.ref.parent.key;
     if(club_name != 'user_post' && getTags(data.description).length < 1) return;
     var location = " ";
     var latlng;
@@ -45,10 +55,6 @@
     var img_url = (data.cover !== undefined) ? data.cover.source : def_img;
     eventData.push([data.link,data.name,img_url,time,location,data.description,timeChronoSt,timeChronoEn,latlng]);
   }
-
-  noticeRef.on("value", function(snap){
-    if(snap.val().length > 1) $('#notice').css('display','block').append(snap.val());
-  });
 
   sourceRef.on("child_added", function(snap) {
     snap.forEach(function(datap){
@@ -88,7 +94,7 @@
         }
       }
     };
-    if(new Date(eventData[0][6]) < new Date(today)){
+    if(eventData.length > 0 && new Date(eventData[0][6]) < new Date(today)){
       eventData.splice(0,1);
     }
     display();
