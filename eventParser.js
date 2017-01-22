@@ -1,4 +1,4 @@
-var def_img = "def.jpg";
+var def_img = "lunch.jpg";
 var config = {
   apiKey: "AIzaSyCaHVx1Aesj0QIuSKWo8mBlAitBjQfrpEg",
   authDomain: "crackling-heat-4631.firebaseapp.com",
