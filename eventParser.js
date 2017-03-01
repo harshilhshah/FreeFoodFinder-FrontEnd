@@ -115,16 +115,15 @@ function display(){
     var item = eventData[z];
     $('#event_box').append("<div class=\"row item\"><div class=\"col-sm-2\"><img class='img-responsive img-rounded min-size' src=\"" + item[2] + 
       "\"/><br></div><div class='col-sm-10'><a href='"+ item[0] +"' class='dark-title'><h4 class='nomargin'>" 
-      + item[1] + "</h4></a><span class='addtocalendar atc-style-button-icon'><a class='atcb-link' tabindex='1'>"
-      + "<img src='cal.png' width='22'></a><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
-      "<var class='atc_date_end'>" + item[7] + "</var><var class='atc_timezone'>America/New_York</var>" + 
-      "<var class='atc_title'>" + item[1] + "</var><var class='atc_description'>" + item[5] + "</var>" + 
-      "<var class='atc_location'>" + item[4] + "</var></var></span><em class='time'>" + item[3] 
+      + item[1] + "</h4></a><img src='cal.png' width='22'><em class='time'>" + item[3] 
       + "</em><br><span class='glyphicon glyphicon-map-marker' aria-hidden='true'/><span class='loc'>" 
       + item[4] + "</span><br><span class='glyphicon glyphicon-tags' aria-hidden='true'/><span class='tags'>" 
       + getTags(item[5]) + "</span><br><a href='#' onclick='$(this).parent().parent().next().next().toggle(); ($(this).text()[0]==\"V\") ?"
-      + " $(this).text(\"Hide description\") : $(this).text(\"View description\");return false;' id='ref'>View Description</a></div></div><br>" + 
-      "<div class='div'>" + item[5] + "</div><br><hr>");
+      + " $(this).text(\"Hide description\") : $(this).text(\"View description\");return false;' id='ref'>View Description</a></div></div>" + 
+      "<span class='addtocalendar atc-style-blue'><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
+      "<var class='atc_date_end'>" + item[7] + "</var><var class='atc_timezone'>America/New_York</var>" + 
+      "<var class='atc_title'>" + item[1] + "</var><var class='atc_description'>" + item[5] + "</var>" + 
+      "<var class='atc_location'>" + item[4] + "</var></var></span><div class='div'>" + item[5] + "</div><div><hr>");
   }
   $(".div").hide();
   addToCal();
