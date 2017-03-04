@@ -1,4 +1,11 @@
 var def_img = "lunch.jpg";
+var likeBtn = "<span class='likebtn-wrapper' data-theme='custom' data-btn_size='28' data-f_size='14'"
+            + "data-icon_l='thmb7-u' data-icon_d='thmb7-d' data-icon_size='16' data-icon_l_c='#ffffff'"
+            + "data-icon_d_c='#ffffff' data-label_c='#ffffff' data-label_c_v='#ffffff'"
+            + "data-counter_l_c='#ffffff' data-counter_d_c='#ffffff' data-bg_c='rgb(66,129,244)'"
+            + "data-label_fs='r' data-identifier=';' data-show_like_label='false'"
+            + "data-counter_clickable='true' data-popup_position='right' data-popup_width='120'"
+            + "data-share_size='small' data-loader_show='true'></span>"
 
 var config = {
     apiKey: "AIzaSyCaHVx1Aesj0QIuSKWo8mBlAitBjQfrpEg",
@@ -120,14 +127,16 @@ function display(){
       + item[4] + "</span><br><span class='glyphicon glyphicon-tags' aria-hidden='true'/><span class='tags'>" 
       + getTags(item[5]) + "</span><br><a href='#' onclick='$(this).parent().parent().next().next().toggle(); ($(this).text()[0]==\"V\") ?"
       + " $(this).text(\"Hide description\") : $(this).text(\"View description\");return false;' id='ref'>View Description</a></div></div>" + 
-      "<span class='addtocalendar atc-style-blue'><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
+      "<span class='addtocalendar atc-style-blue' onclick=addToCalButtonClickListener()><var class='atc_event'><var class='atc_date_start'>" + item[6] + "</var>" + 
       "<var class='atc_date_end'>" + item[7] + "</var><var class='atc_timezone'>America/New_York</var>" + 
       "<var class='atc_title'>" + item[1] + "</var><var class='atc_description'>" + item[5] + "</var>" + 
-      "<var class='atc_location'>" + item[4] + "</var></var></span><div class='div'>" + item[5] + "</div><div><hr>");
+      "<var class='atc_location'>" + item[4] + "</var></var></span>" + likeBtn.replace(';',item[1]) + "<div class='div'>" + item[5] + "</div><div><hr>");
   }
   $(".div").hide();
   addToCal();
 }
+
+function addToCalButtonClickListener(){ ga('send', 'event', 'Button', 'Click', 'Add to Calendar');}
 
 function addToCal() {
   if (window.ifaddtocalendar == 1) { 
