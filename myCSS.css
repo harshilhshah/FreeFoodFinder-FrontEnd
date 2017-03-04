@@ -147,3 +147,7 @@ span.glyphicon{
   height: 500px;
   margin-bottom: 20px;
 }
+
+.likeBtn{
+  margin-left: 32px;
+}

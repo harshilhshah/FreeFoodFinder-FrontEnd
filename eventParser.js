@@ -1,9 +1,9 @@
 var def_img = "lunch.jpg";
-var likeBtn = "<span class='likebtn-wrapper' data-theme='custom' data-btn_size='28' data-f_size='14'"
+var likeBtn = "<span class='likebtn-wrapper likeBtn' data-theme='custom' data-btn_size='30' data-f_size='14'"
             + "data-icon_l='thmb7-u' data-icon_d='thmb7-d' data-icon_size='16' data-icon_l_c='#ffffff'"
             + "data-icon_d_c='#ffffff' data-label_c='#ffffff' data-label_c_v='#ffffff'"
             + "data-counter_l_c='#ffffff' data-counter_d_c='#ffffff' data-bg_c='rgb(66,129,244)'"
-            + "data-label_fs='r' data-identifier=';' data-show_like_label='false'"
+            + "data-label_fs='r' data-identifier=';' data-show_like_label='false' data-counter_zero_show='true'"
             + "data-counter_clickable='true' data-popup_position='right' data-popup_width='120'"
             + "data-share_size='small' data-loader_show='true'></span>"
 
